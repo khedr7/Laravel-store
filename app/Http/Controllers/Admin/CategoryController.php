@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::latest();
         if ($request->filled('search')) {
             $categories->where('name', 'like', "%$request->search%");
         }
@@ -45,9 +45,17 @@ class CategoryController extends Controller
         $validation = $request->validate([
             'name'     => 'required',
             'name.*'     => 'required|min:3',
+            'images'    => 'required|array',
+            'images.*'    => 'required|file|image',
         ]);
 
-        Category::create($validation);
+        $category = Category::create($validation);
+        if ($request->hasFile('images')) {
+            $fileAdders = $category->addMultipleMediaFromRequest(['images'])
+            ->each(function ($fileAdder) {
+                $fileAdder->preservingOriginal()->toMediaCollection('images');
+            });
+        }
         return redirect()->route('admin.categories.index');
 
     }
@@ -60,7 +68,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('admin.categories.show', ['category' => $category]);
+        $mediaItems = $category->getMedia('images');
+        return view('admin.categories.show', ['category' => $category, 'mediaItems' => $mediaItems]);
     }
 
     /**
@@ -71,7 +80,8 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', ['category' => $category]);
+        $mediaItems = $category->getMedia('images');
+        return view('admin.categories.edit', ['category' => $category, 'mediaItems' => $mediaItems]);
     }
 
     /**
@@ -86,11 +96,21 @@ class CategoryController extends Controller
         $validation = $request->validate([
             'name'     => 'required',
             'name.*'     => 'required|min:3',
+            'images'    => 'required|array',
+            'images.*'    => 'required|file|image',
         ]);
 
         foreach ($validation['name'] as $lang => $name) {
             $category->setTranslation('name', $lang, $name);
         }
+        if ($request->hasFile('images')) {
+            $category->clearMediaCollection('images');
+            $fileAdders = $category->addMultipleMediaFromRequest(['images'])
+            ->each(function ($fileAdder) {
+                $fileAdder->toMediaCollection('images');
+            });
+        }
+
         $category->save();
         return redirect()->route('admin.categories.index');
     }
