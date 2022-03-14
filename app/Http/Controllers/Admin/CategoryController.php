@@ -42,6 +42,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // $request->dd();
         $validation = $request->validate([
             'name'     => 'required',
             'name.*'     => 'required|min:3',
@@ -100,6 +101,7 @@ class CategoryController extends Controller
             'images.*'    => 'required|file|image',
         ]);
 
+
         foreach ($validation['name'] as $lang => $name) {
             $category->setTranslation('name', $lang, $name);
         }
@@ -123,6 +125,7 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
+        // $category->clearMediaCollection('images');
         $category->delete();
         return redirect()->route('admin.categories.index');
     }
