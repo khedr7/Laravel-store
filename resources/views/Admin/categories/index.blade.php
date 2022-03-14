@@ -27,7 +27,7 @@
                                     <th>
                                         Arabic name
                                     </th>
-                                    <th class="text-right">
+                                    <th>
                                         Creation date
                                     </th>
                                     <th class="text-right">
@@ -54,15 +54,16 @@
                                                 method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <a rel="tooltip" class="btn btn-success btn-link"
+                                                <a rel="tooltip" class="btn btn-success btn-sm btn-round btn-icon"
                                                     href="{{ route('admin.categories.edit', $category) }}"
                                                     data-original-title="" title="">
-                                                    <i class="material-icons">edit</i>
+                                                    <i class="tim-icons icon-settings"></i>
                                                     <div class="ripple-container"></div>
                                                 </a>
-                                                <button type="submit" rel="tooltip" class="btn btn-danger btn-link"
-                                                    data-original-title="" title="">
-                                                    <i class="material-icons">delete</i>
+                                                <button type="submit" rel="tooltip"
+                                                    class="btn btn-danger btn-sm btn-round btn-icon" data-original-title=""
+                                                    title="">
+                                                    <i class="tim-icons icon-simple-remove"></i>
                                                     <div class="ripple-container"></div>
                                                 </button>
                                             </form>
