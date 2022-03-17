@@ -22,7 +22,9 @@
                     <div class="typography-line">
                         <span>Category</span>
                         <p class="text-primary">
-                            {{ $product->category->name }}</p>
+                            <a
+                                href="{{ route('admin.categories.show', $product->category) }}">{{ $product->category->name }}</a>
+                        </p>
                     </div>
                     <div class="typography-line">
                         <span>Price</span>

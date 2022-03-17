@@ -1,17 +1,17 @@
-@extends('layouts.app', ['page' => __('categories'), 'pageSlug' => 'categories'])
+@extends('layouts.app', ['page' => __('offers'), 'pageSlug' => 'offers'])
 
 @section('content')
     <div class="row">
         <div class="col-md-12">
             <div class="card ">
                 <div class="card-header">
-                    <h4 class="card-title"> Here you can manage categories</h4>
+                    <h4 class="card-title"> Here you can manage Offers</h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12 text-right">
-                            <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary">Add
-                                category </a>
+                            <a href="{{ route('admin.offers.create') }}" class="btn btn-sm btn-primary">Add
+                                Offer </a>
                         </div>
                     </div>
                     <div class="table-responsive">
@@ -28,6 +28,18 @@
                                         Arabic name
                                     </th>
                                     <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        discount
+                                    </th>
+                                    <th class="text-right">
+                                        Start date
+                                    </th>
+                                    <th class="text-right">
+                                        End date
+                                    </th>
+                                    <th class="text-right">
                                         Creation date
                                     </th>
                                     <th class="text-right">
@@ -36,26 +48,36 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($categories as $category)
+                                @foreach ($offers as $offer)
                                     <tr>
                                         <td>
-                                            <a
-                                                href="{{ route('admin.categories.show', $category) }}">{{ $category->name }}</a>
+                                            <a href="{{ route('admin.offers.show', $offer) }}">{{ $offer->name }}</a>
                                         </td>
                                         <td>
                                             <a
-                                                href="{{ route('admin.categories.show', $category) }}">{{ $category->getTranslation('name', 'ar') }}</a>
+                                                href="{{ route('admin.offers.show', $offer) }}">{{ $offer->getTranslation('name', 'ar') }}</a>
                                         </td>
                                         <td>
-                                            {{ $category->created_at }}
+                                            {{ $offer->type }}
+                                        </td>
+                                        <td>
+                                            {{ $offer->discount }}
+                                        </td>
+                                        <td>
+                                            {{ $offer->stated_at }}
+                                        </td>
+                                        <td>
+                                            {{ $offer->ended_at }}
+                                        </td>
+                                        <td>
+                                            {{ $offer->created_at }}
                                         </td>
                                         <td class="td-actions text-right">
-                                            <form action="{{ route('admin.categories.destroy', $category) }}"
-                                                method="post">
+                                            <form action="{{ route('admin.offers.destroy', $offer) }}" method="post">
                                                 @csrf
                                                 @method('delete')
                                                 <a rel="tooltip" class="btn btn-success btn-sm btn-round btn-icon"
-                                                    href="{{ route('admin.categories.edit', $category) }}"
+                                                    href="{{ route('admin.offers.edit', $offer) }}"
                                                     data-original-title="" title="">
                                                     <i class="tim-icons icon-settings"></i>
                                                     <div class="ripple-container"></div>
@@ -75,7 +97,7 @@
                     </div>
                     <div class="row">
                         <div class="col-3 text-center m-auto">
-                            {{ $categories->links('pagination::bootstrap-4') }}
+                            {{ $offers->links('pagination::bootstrap-4') }}
                         </div>
                     </div>
                 </div>

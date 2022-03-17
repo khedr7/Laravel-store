@@ -47,6 +47,13 @@
                     <p>{{ __('products') }}</p>
                 </a>
             </li>
+
+            <li @if ($pageSlug == 'offers') class="active " @endif>
+                <a href="{{ route('admin.offers.index') }}">
+                    <i class="tim-icons icon-tag"></i>
+                    <p>{{ __('Offers') }}</p>
+                </a>
+            </li>
             <li @if ($pageSlug == 'icons') class="active " @endif>
                 <a href="{{ route('pages.icons') }}">
                     <i class="tim-icons icon-atom"></i>
