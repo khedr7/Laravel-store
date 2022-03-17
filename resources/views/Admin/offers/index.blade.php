@@ -63,13 +63,13 @@
                                         <td>
                                             {{ $offer->discount }}
                                         </td>
-                                        <td>
-                                            {{ $offer->stated_at }}
+                                        <td class="text-right">
+                                            {{ $offer->started_at }}
                                         </td>
-                                        <td>
+                                        <td class="text-right">
                                             {{ $offer->ended_at }}
                                         </td>
-                                        <td>
+                                        <td class="text-right">
                                             {{ $offer->created_at }}
                                         </td>
                                         <td class="td-actions text-right">

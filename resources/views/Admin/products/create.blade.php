@@ -80,7 +80,9 @@
                                             <span class="form-check-sign"></span>
                                         </label>
                                     </div>
+                                    @include('alerts.feedback', ['field' => "status['en']"])
                                 </div>
+
                             </div>
                             <div class="col">
                                 <div class="form-group{{ $errors->has("status['ar']") ? ' has-danger' : '' }}">
@@ -105,6 +107,7 @@
                                             <span class="form-check-sign"></span>
                                         </label>
                                     </div>
+                                    @include('alerts.feedback', ['field' => "status['ar']"])
                                 </div>
                             </div>
                         </div>
