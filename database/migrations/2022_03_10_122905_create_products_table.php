@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->text('name');
             $table->double('price');
-            $table->string('featured_image');
+            $table->text('status');
             $table->foreignId('category_id')->constrained('categories');
             $table->text('description');
             $table->timestamps();
