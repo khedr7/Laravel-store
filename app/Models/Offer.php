@@ -17,5 +17,17 @@ class Offer extends Model implements HasMedia
         'type',
         'discount',
         'started_at',
-        'ended_at'];
+        'ended_at',
+        'poduct_id',
+        'category_id',
+    ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class,'product_offer','offer_id','product_id');
+    }
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class,'category_offer','offer_id','category_id');
+    }
 }

@@ -81,6 +81,35 @@
                             @include('alerts.feedback', ['field' => 'ended_at'])
                         </div>
 
+                        <div class="form-group{{ $errors->has('categories') ? ' has-danger' : '' }}">
+                            <label>{{ __('Categories') }} <small>(Fill if you want to apply offer on
+                                    categories)</small></label>
+                            <select multiple class="form-control{{ $errors->has('categories') ? ' is-invalid' : '' }}"
+                                name="categories[]" id="input-categories" value="{{ $offer->category_id }} ">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">
+                                        {{ $category->name }}/{{ $category->getTranslation('name', 'ar') }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @include('alerts.feedback', ['field' => 'categories'])
+                        </div>
+
+                        <div class="form-group{{ $errors->has('products') ? ' has-danger' : '' }}">
+                            <label>{{ __('Products') }} <small>(Fill if you want to apply offer on
+                                    products)</small></label>
+                            <select multiple class="form-control{{ $errors->has('products') ? ' is-invalid' : '' }}"
+                                name="products[]" id="input-products" value="{{ $offer->product_id }}">
+                                @foreach ($products as $product)
+                                    <option value="{{ $product->id }}">
+                                        {{ $product->name }}/{{ $product->getTranslation('name', 'ar') }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <small>You can fill both categories and products</small>
+                            @include('alerts.feedback', ['field' => 'products'])
+                        </div>
+
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-fill btn-primary">{{ __('Save') }}</button>

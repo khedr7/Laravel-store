@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Offer;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OfferController extends Controller
@@ -28,7 +30,9 @@ class OfferController extends Controller
      */
     public function create()
     {
-        return view('admin.offers.create');
+        $products = Product::all();
+        $categories = Category::all();
+        return view('admin.offers.create',['categories' => $categories, 'products' => $products]);
     }
 
     /**
@@ -46,9 +50,16 @@ class OfferController extends Controller
             'type'       =>  'required',
             'started_at' => 'required|before:ended_at',
             'ended_at'   => 'required|after:started_at',
+            'products'          => 'array',
+            'products.*'        => 'numeric|exists:products,id',
+            'categories'          => 'array',
+            'categories.*'        => 'numeric|exists:categories,id',
         ]);
 
         $offer = Offer::create($validation);
+        $offer->products()->attach($request->products);
+        $offer->categories()->attach($request->categories);
+
         return redirect()->route('admin.offers.index');
     }
 
@@ -71,7 +82,9 @@ class OfferController extends Controller
      */
     public function edit(Offer $offer)
     {
-        return view('admin.offers.edit',['offer'=>$offer]);
+        $products = Product::all();
+        $categories = Category::all();
+        return view('admin.offers.edit',['offer'=>$offer, 'categories' => $categories, 'products' => $products]);
     }
 
     /**
@@ -90,6 +103,10 @@ class OfferController extends Controller
             'type'       =>  'required',
             'started_at' => 'required|before:ended_at',
             'ended_at'   => 'required|after:started_at',
+            'products'          => 'array',
+            'products.*'        => 'numeric|exists:products,id',
+            'categories'          => 'array',
+            'categories.*'        => 'numeric|exists:categories,id',
         ]);
 
         foreach ($validation['name'] as $lang => $name) {
@@ -99,6 +116,14 @@ class OfferController extends Controller
         $offer->type =  $validation['type'];
         $offer->started_at = $validation['started_at'];
         $offer->ended_at = $validation['ended_at'];
+        if ($request->filled('categories')) {
+            $offer->categories()->detach();
+            $offer->categories()->attach($request->categories);
+        }
+        if ($request->filled('products')) {
+            $offer->products()->detach();
+            $offer->products()->attach($request->products);
+        }
         $offer->save();
 
         return redirect()->route('admin.offers.index');

@@ -53,7 +53,6 @@
                                 @endforeach
                             </select>
                             @include('alerts.feedback', ['field' => 'category_id'])
-
                         </div>
 
                         <div class="row">

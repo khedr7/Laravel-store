@@ -20,4 +20,9 @@ class Category extends Model implements HasMedia
     {
         return $this->hasMany(Product::class);
     }
+
+    public function offers()
+    {
+        return $this->belongsToMany(Offer::class,'category_offer','category_id','offer_id');
+    }
 }
