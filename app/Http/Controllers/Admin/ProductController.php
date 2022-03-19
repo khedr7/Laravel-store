@@ -61,16 +61,16 @@ class ProductController extends Controller
     {
         // $request->dd();
         $validation = $request->validate([
-            'name'   => 'required',
-            'name.*'   => 'required|string|min:3|max:20',
-            'price'   => 'required|numeric',
+            'name'          => 'required',
+            'name.*'        => 'required|string|min:3|max:20',
+            'price'         => 'required|numeric',
             'description'   => 'required',
-            'description.*'   => 'required|min:5|max:100',
-            'status'    => 'required',
-            'status.*'    => 'required',
-            'category_id'    => 'required|numeric|exists:categories,id',
-            'images'    => 'required|array',
-            'images.*'    => 'required|file|image',
+            'description.*' => 'required|min:5|max:100',
+            'status'        => 'required',
+            'status.*'      => 'required',
+            'category_id'   => 'required|numeric|exists:categories,id',
+            'images'        => 'required|array',
+            'images.*'      => 'required|file|image',
         ]);
 
         $product = Product::create($validation);
@@ -120,16 +120,16 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $validation = $request->validate([
-            'name'   => 'required',
-            'name.*'   => 'required|string|min:3|max:20',
-            'price'   => 'required|numeric',
-            'description'   => 'required',
-            'description.*'   => 'required|min:10|max:100',
-            'status'    => 'required',
-            'status.*'    => 'required',
+            'name'           => 'required',
+            'name.*'         => 'required|string|min:3|max:20',
+            'price'          => 'required|numeric',
+            'description'    => 'required',
+            'description.*'  => 'required|min:10|max:100',
+            'status'         => 'required',
+            'status.*'       => 'required',
             'category_id'    => 'required|numeric|exists:categories,id',
-            'images'    => 'required|array',
-            'images.*'    => 'required|file|image',
+            'images'         => 'required|array',
+            'images.*'       => 'required|file|image',
         ]);
 
         $product->price = $validation['price'];

@@ -44,22 +44,35 @@ class OfferController extends Controller
     public function store(Request $request)
     {
         $validation = $request->validate([
-            'name'       => 'required',
-            'name.*'     => 'required|min:3',
-            'discount'   =>  'required|numeric',
-            'type'       =>  'required',
-            'started_at' => 'required|before:ended_at',
-            'ended_at'   => 'required|after:started_at',
-            'products'          => 'array',
-            'products.*'        => 'numeric|exists:products,id',
-            'categories'          => 'array',
-            'categories.*'        => 'numeric|exists:categories,id',
+            'name'          => 'required',
+            'name.*'        => 'required|min:3',
+            'discount'      =>  'required|numeric',
+            'type'          =>  'required',
+            'started_at'    => 'required|before:ended_at',
+            'ended_at'      => 'required|after:started_at',
+            'products'      => 'array',
+            'products.*'    => 'numeric|exists:products,id',
+            'categories'    => 'array',
+            'categories.*'  => 'numeric|exists:categories,id',
         ]);
 
         $offer = Offer::create($validation);
         $offer->products()->attach($request->products);
         $offer->categories()->attach($request->categories);
-
+        $categories = $offer->categories;
+        if ($categories) {
+            foreach ($categories as $category) {
+                foreach ($category->products as $product) {
+                    if ($product->offers->contains($offer->id)) {
+                        continue;
+                    }
+                    else {
+                        $offer->products()->attach($product->id);
+                    }
+                }
+            }
+        }
+            
         return redirect()->route('admin.offers.index');
     }
 
@@ -97,16 +110,16 @@ class OfferController extends Controller
     public function update(Request $request, Offer $offer)
     {
         $validation = $request->validate([
-            'name'       => 'required',
-            'name.*'     => 'required|min:3',
-            'discount'   =>  'required|numeric',
-            'type'       =>  'required',
-            'started_at' => 'required|before:ended_at',
-            'ended_at'   => 'required|after:started_at',
-            'products'          => 'array',
-            'products.*'        => 'numeric|exists:products,id',
-            'categories'          => 'array',
-            'categories.*'        => 'numeric|exists:categories,id',
+            'name'         => 'required',
+            'name.*'       => 'required|min:3',
+            'discount'     =>  'required|numeric',
+            'type'         =>  'required',
+            'started_at'   => 'required|before:ended_at',
+            'ended_at'     => 'required|after:started_at',
+            'products'     => 'array',
+            'products.*'   => 'numeric|exists:products,id',
+            'categories'   => 'array',
+            'categories.*' => 'numeric|exists:categories,id',
         ]);
 
         foreach ($validation['name'] as $lang => $name) {
@@ -137,6 +150,8 @@ class OfferController extends Controller
      */
     public function destroy(Offer $offer)
     {
+        $offer->products()->detach();
+        $offer->categories()->detach();
         $offer->delete();
         return redirect()->route('admin.offers.index');
     }

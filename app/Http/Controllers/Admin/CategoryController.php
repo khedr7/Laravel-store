@@ -45,9 +45,9 @@ class CategoryController extends Controller
         // $request->dd();
         $validation = $request->validate([
             'name'     => 'required',
-            'name.*'     => 'required|min:3',
-            'images'    => 'required|array',
-            'images.*'    => 'required|file|image',
+            'name.*'   => 'required|min:3',
+            'images'   => 'required|array',
+            'images.*' => 'required|file|image',
         ]);
 
         $category = Category::create($validation);
@@ -96,9 +96,9 @@ class CategoryController extends Controller
     {
         $validation = $request->validate([
             'name'     => 'required',
-            'name.*'     => 'required|min:3',
-            'images'    => 'required|array',
-            'images.*'    => 'required|file|image',
+            'name.*'   => 'required|min:3',
+            'images'   => 'required|array',
+            'images.*' => 'required|file|image',
         ]);
 
 

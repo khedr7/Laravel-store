@@ -43,9 +43,19 @@
                         <p class="text-primary">
                             {{ $offer->created_at }}</p>
                     </div>
-                    <div class="text-left">
-                        <a href="{{ route('admin.offers.edit', $offer) }}" class="btn btn-sm btn-primary"> Edit
-                        </a>
+                    <div class="row">
+                        <div class="col-1 text-left">
+                            <a href="{{ route('admin.offers.edit', $offer) }}" class="btn btn-sm btn-primary"> Edit </a>
+                        </div>
+                        <div class="col-1.5 text-left">
+                            <form action="{{ route('admin.offers.destroy', $offer) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-sm btn-primary" data-original-title="" title="">
+                                    {{ __('Delete') }}
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
