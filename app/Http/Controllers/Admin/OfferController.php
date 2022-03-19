@@ -48,8 +48,8 @@ class OfferController extends Controller
             'name.*'        => 'required|min:3',
             'discount'      =>  'required|numeric',
             'type'          =>  'required',
-            'started_at'    => 'required|before:ended_at',
-            'ended_at'      => 'required|after:started_at',
+            'started_at'    => 'required|date|before:ended_at',
+            'ended_at'      => 'required|date|after:started_at',
             'products'      => 'array',
             'products.*'    => 'numeric|exists:products,id',
             'categories'    => 'array',
@@ -114,8 +114,8 @@ class OfferController extends Controller
             'name.*'       => 'required|min:3',
             'discount'     =>  'required|numeric',
             'type'         =>  'required',
-            'started_at'   => 'required|before:ended_at',
-            'ended_at'     => 'required|after:started_at',
+            'started_at'   => 'required|date|before:ended_at',
+            'ended_at'     => 'required|date|after:started_at',
             'products'     => 'array',
             'products.*'   => 'numeric|exists:products,id',
             'categories'   => 'array',
@@ -129,13 +129,26 @@ class OfferController extends Controller
         $offer->type =  $validation['type'];
         $offer->started_at = $validation['started_at'];
         $offer->ended_at = $validation['ended_at'];
+        if ($request->filled('products')) {
+            $offer->products()->detach();
+            $offer->products()->attach($request->products);
+        }
         if ($request->filled('categories')) {
             $offer->categories()->detach();
             $offer->categories()->attach($request->categories);
         }
-        if ($request->filled('products')) {
-            $offer->products()->detach();
-            $offer->products()->attach($request->products);
+        $categories = $offer->categories;
+        if ($categories) {
+            foreach ($categories as $category) {
+                foreach ($category->products as $product) {
+                    if ($product->offers->contains($offer->id)) {
+                        continue;
+                    }
+                    else {
+                        $offer->products()->attach($product->id);
+                    }
+                }
+            }
         }
         $offer->save();
 

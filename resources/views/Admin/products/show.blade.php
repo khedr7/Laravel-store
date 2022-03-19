@@ -32,6 +32,11 @@
                             {{ $product->price }}</p>
                     </div>
                     <div class="typography-line">
+                        <span>current_price</span>
+                        <p class="text-primary">
+                            {{ $product->current_price }}</p>
+                    </div>
+                    <div class="typography-line">
                         <span>English Status</span>
                         <p class="text-primary">
                             {{ $product->getTranslation('status', 'en') }}</p>
@@ -50,6 +55,12 @@
                         <span>Arabic description</span>
                         <p class="text-primary">
                             {{ $product->getTranslation('description', 'ar') }}</p>
+                    </div>
+                    <div class="typography-line">
+                        <span>Offers</span>
+                        @foreach ($product->offers as $offer)
+                            <a href="{{ route('admin.offers.show', $offer) }}">({{ $offer->name }}) </a>
+                        @endforeach
                     </div>
                     <div class="typography-line">
                         <span>Created at</span>

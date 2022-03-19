@@ -17,7 +17,9 @@ class Product extends Model implements HasMedia
         'price',
         'description',
         'status',
-        'category_id'];
+        'category_id',
+        'current_price'
+    ];
 
     public function category()
     {

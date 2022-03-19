@@ -31,7 +31,7 @@
                                         Category
                                     </th>
                                     <th>
-                                        Price
+                                        Current Price
                                     </th>
                                     <th class="text-right">
                                         Status
@@ -62,7 +62,7 @@
 
                                         </td>
                                         <td>
-                                            {{ $product->price }}
+                                            {{ $product->current_price }}
                                         </td>
                                         <td class="text-right">
                                             {{ $product->status }}

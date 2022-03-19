@@ -20,7 +20,7 @@ class ProductController extends Controller
             'category_id'  => 'numeric'
         ]);
 
-        $products = Product::latest();
+        $products = Product::all();
         $categories = Category::all();
 
         if ($request->filled('search')) {
@@ -36,7 +36,25 @@ class ProductController extends Controller
             $products->whereIn('status->en', $request->product_status);
         }
 
-        $products = $products->paginate(10);
+        foreach ($products as $product) {
+            $product->current_price = $product->price;
+            $offers = $product->offers()->orderBy('started_at')->get();
+            foreach ($offers as $offer) {
+                if ($offer->started_at <= now() && $offer->ended_at >= now()) {
+                    if ($offer->type == 'Percentage') {
+                        $dis = (1 - (0.01 * $offer->discount));
+                        $product->current_price = $product->current_price * $dis; 
+                    }
+                    elseif ($offer->type == 'Constant') {
+                        $product->current_price = $product->current_price * $offer->discount; 
+                    }
+                }
+            }
+        $product->save();
+        }
+
+        $products = Product::latest();
+        $products = $products->paginate(8);
         return view('admin.products.index', ['products' => $products,'categories' => $categories]);
     }
 
@@ -73,6 +91,7 @@ class ProductController extends Controller
             'images.*'      => 'required|file|image',
         ]);
 
+        $validation['current_price'] = $validation['price'];
         $product = Product::create($validation);
             if ($request->hasFile('images')) {
                 $fileAdders = $product->addMultipleMediaFromRequest(['images'])
@@ -92,6 +111,21 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        $product->current_price = $product->price;
+        $offers = $product->offers()->orderBy('started_at')->get();
+            foreach ($offers as $offer) {
+                if ($offer->started_at <= now() && $offer->ended_at >= now()) {
+                    if ($offer->type == 'Percentage') {
+                        $dis = (1 - (0.01 * $offer->discount));
+                        $product->current_price = $product->current_price * $dis; 
+                    }
+                    elseif ($offer->type == 'Constant') {
+                        $product->current_price = $product->current_price * $offer->discount; 
+                    }
+                }
+            }
+        $product->save();
+
         $mediaItems = $product->getMedia('images');
         return view('admin.products.show', ['product' => $product, 'mediaItems' => $mediaItems]);
     }

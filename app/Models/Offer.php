@@ -18,7 +18,7 @@ class Offer extends Model implements HasMedia
         'discount',
         'started_at',
         'ended_at',
-        'poduct_id',
+        'product_id',
         'category_id',
     ];
 

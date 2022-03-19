@@ -15,8 +15,8 @@ class CreateProductOfferTable extends Migration
     {
         Schema::create('product_offer', function (Blueprint $table) {
             $table->id();
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->foreign('offer_id')->references('id')->on('offers');
+            $table->foreignId('offer_id')->constrained('offers');
+            $table->foreignId('product_id')->constrained('products');
             $table->timestamps();
         });
     }
