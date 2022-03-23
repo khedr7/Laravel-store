@@ -15,9 +15,76 @@ class OfferController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $offers = Offer::latest();
+        if ($request->filled('search')) {
+            $offers->where('name', 'like', "%$request->search%");
+            $offers->orWhere('type', 'like', "%$request->search%");
+            $offers->orWhere('discount', 'like', "%$request->search%");
+            $offers->orWhere('started_at', 'like', "%$request->search%");
+            $offers->orWhere('ended_at', 'like', "%$request->search%");
+        }
+        if ($request->filled('type')) {
+            $offers->whereIn('type', $request->type);
+        }
+
+        if ($request->filled('sort')) {
+            if ($request->filled('order')) {
+                if ($request->order == 'ascending') {
+                    if ($request->sort == 'name_ar') {
+                        $offers = Offer::orderBy('name', 'asc');
+                    }
+                    if ($request->sort == 'name_en') {
+                        $offers = Offer::orderBy('name', 'asc');
+                    }
+                    if ($request->sort == 'start_date') {
+                        $offers = Offer::orderBy('started_at', 'asc');
+                    }
+                    if ($request->sort == 'end_date') {
+                        $offers = Offer::orderBy('ended_at', 'asc');
+                    }
+                    if ($request->sort == 'creation_date') {
+                        $offers = Offer::orderBy('created_at', 'asc');
+                    }
+                }
+                if ($request->order == 'descending') {
+                    if ($request->sort == 'name_ar') {
+                        $offers = Offer::orderBy('name->ar', 'desc');
+                    }
+                    if ($request->sort == 'name_en') {
+                        $offers = Offer::orderBy('name', 'desc');
+                    }
+                    if ($request->sort == 'start_date') {
+                        $offers = Offer::orderBy('started_at', 'desc');
+                    }
+                    if ($request->sort == 'end_date') {
+                        $offers = Offer::orderBy('ended_at', 'desc');
+                    }
+                    if ($request->sort == 'creation_date') {
+                        $offers = Offer::orderBy('created_at', 'desc');
+                    }
+                }
+            }
+                else {
+                    if ($request->sort == 'name_ar') {
+                        $offers = Offer::orderBy('name->ar', 'asc');
+                    }
+                    if ($request->sort == 'name_en') {
+                        $offers = Offer::orderBy('name', 'asc');
+                    }
+                    if ($request->sort == 'start_date') {
+                        $offers = Offer::orderBy('started_at', 'asc');
+                    }
+                    if ($request->sort == 'end_date') {
+                        $offers = Offer::orderBy('ended_at', 'asc');
+                    }
+                    if ($request->sort == 'creation_date') {
+                        $offers = Offer::orderBy('created_at', 'asc');
+                    }
+                }
+        }
+
         $offers = $offers->paginate(10);
 
         return view('admin.offers.index',['offers'=> $offers]);
@@ -72,7 +139,7 @@ class OfferController extends Controller
                 }
             }
         }
-            
+
         return redirect()->route('admin.offers.index');
     }
 
