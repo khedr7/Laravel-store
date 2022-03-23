@@ -36,7 +36,7 @@
 
                         <div class="form-group{{ $errors->has('price') ? ' has-danger' : '' }}">
                             <label>{{ __('Price') }}</label>
-                            <input type="text" name="price" id="input-price"
+                            <input type="number" name="price" id="input-price"
                                 class="form-control{{ $errors->has('price') ? ' is-invalid' : '' }}"
                                 placeholder="{{ __('Price') }}" value="{{ $product->price }}" required="true"
                                 aria-required="true">
@@ -49,13 +49,13 @@
                                 name="category_id" id="input-category_id" required="true" aria-required="true"
                                 value="{{ $product->category_id }}">
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">
+                                    <option value="{{ $category->id }}"
+                                        {{ $product->category->id == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}/{{ $category->getTranslation('name', 'ar') }}
                                     </option>
                                 @endforeach
                             </select>
                             @include('alerts.feedback', ['field' => 'category_id'])
-
                         </div>
 
                         <div class="row">

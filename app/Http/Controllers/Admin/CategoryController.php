@@ -19,6 +19,44 @@ class CategoryController extends Controller
         if ($request->filled('search')) {
             $categories->where('name', 'like', "%$request->search%");
         }
+        if ($request->filled('sort')) {
+            if ($request->filled('order')) {
+                if ($request->order == 'ascending') {
+                    if ($request->sort == 'name_ar') {
+                        $categories = Category::orderBy('name', 'asc');
+                        // $categories = Category::orderByTranslation('name', 'asc')->get();
+                    }
+                    if ($request->sort == 'name_en') {
+                        $categories = Category::orderBy('name', 'asc');
+                    }
+                    if ($request->sort == 'creation_date') {
+                        $categories = Category::orderBy('created_at', 'asc');
+                    }
+                }
+                if ($request->order == 'descending') {
+                    if ($request->sort == 'name_ar') {
+                        $categories = Category::orderBy('name->ar', 'desc');
+                    }
+                    if ($request->sort == 'name_en') {
+                        $categories = Category::orderBy('name', 'desc');
+                    }
+                    if ($request->sort == 'creation_date') {
+                        $categories = Category::orderBy('created_at', 'desc');
+                    }
+                }
+            }
+                else {
+                    if ($request->sort == 'name_ar') {
+                        $categories = Category::orderBy('name->ar', 'asc');
+                    }
+                    if ($request->sort == 'name_en') {
+                        $categories = Category::orderBy('name', 'asc');
+                    }
+                    if ($request->sort == 'creation_date') {
+                        $categories = Category::orderBy('created_at', 'asc');
+                    }
+                }
+        }
         $categories  = $categories->paginate(10);
         return view('admin.categories.index', ['categories' => $categories]);
     }
@@ -125,7 +163,9 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        // $category->clearMediaCollection('images');
+        $category->clearMediaCollection('images');
+        $category->offers()->detach();
+        // $category->products()->detach();
         $category->delete();
         return redirect()->route('admin.categories.index');
     }

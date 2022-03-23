@@ -15,8 +15,8 @@ class CreateCategoryOfferTable extends Migration
     {
         Schema::create('category_offer', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('offer_id')->constrained('offers');
-            $table->foreignId('category_id')->constrained('categories');
+            $table->foreignId('offer_id')->constrained('offers')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

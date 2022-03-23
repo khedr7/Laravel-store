@@ -58,18 +58,35 @@
                     </div>
                     <div class="typography-line">
                         <span>Offers</span>
-                        @foreach ($product->offers as $offer)
-                            <a href="{{ route('admin.offers.show', $offer) }}">({{ $offer->name }}) </a>
-                        @endforeach
+                        @if (count($product->offers) !== 0)
+                            @foreach ($product->offers as $offer)
+                                <a href="{{ route('admin.offers.show', $offer) }}">({{ $offer->name }}) </a>
+                            @endforeach
+                        @endif
+                        @if (count($product->offers) == 0)
+                            <p class="text-primary">
+                                There is no offers </p>
+                        @endif
                     </div>
                     <div class="typography-line">
                         <span>Created at</span>
                         <p class="text-primary">
                             {{ $product->created_at }}</p>
                     </div>
-                    <div class="text-left">
-                        <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-primary"> Edit
-                        </a>
+                    <div class="row">
+                        <div class="col-1 text-left">
+                            <a href="{{ route('admin.products.edit', $product) }}" class="btn btn-sm btn-primary"> Edit
+                            </a>
+                        </div>
+                        <div class="col-1.5 text-left">
+                            <form action="{{ route('admin.products.destroy', $product) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-sm btn-primary" data-original-title="" title="">
+                                    {{ __('Delete') }}
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

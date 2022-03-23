@@ -19,13 +19,29 @@
                             {{ $category->getTranslation('name', 'ar') }}</p>
                     </div>
                     <div class="typography-line">
+                        <span>Number of products</span>
+                        <p class="text-primary">
+                            {{ count($category->products) }}</p>
+                    </div>
+                    <div class="typography-line">
                         <span>Created at</span>
                         <p class="text-primary">
                             {{ $category->created_at }}</p>
                     </div>
-                    <div class="text-left">
-                        <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-primary"> Edit
-                        </a>
+                    <div class="row">
+                        <div class="col-1 text-left">
+                            <a href="{{ route('admin.categories.edit', $category) }}" class="btn btn-sm btn-primary"> Edit
+                            </a>
+                        </div>
+                        <div class="col-1.5 text-left">
+                            <form action="{{ route('admin.categories.destroy', $category) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button type="submit" class="btn btn-sm btn-primary" data-original-title="" title="">
+                                    {{ __('Delete') }}
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -43,10 +43,10 @@ class ProductController extends Controller
                 if ($offer->started_at <= now() && $offer->ended_at >= now()) {
                     if ($offer->type == 'Percentage') {
                         $dis = (1 - (0.01 * $offer->discount));
-                        $product->current_price = $product->current_price * $dis; 
+                        $product->current_price = $product->current_price * $dis;
                     }
                     elseif ($offer->type == 'Constant') {
-                        $product->current_price = $product->current_price * $offer->discount; 
+                        $product->current_price = $product->current_price * $offer->discount;
                     }
                 }
             }
@@ -117,10 +117,10 @@ class ProductController extends Controller
                 if ($offer->started_at <= now() && $offer->ended_at >= now()) {
                     if ($offer->type == 'Percentage') {
                         $dis = (1 - (0.01 * $offer->discount));
-                        $product->current_price = $product->current_price * $dis; 
+                        $product->current_price = $product->current_price * $dis;
                     }
                     elseif ($offer->type == 'Constant') {
-                        $product->current_price = $product->current_price * $offer->discount; 
+                        $product->current_price = $product->current_price * $offer->discount;
                     }
                 }
             }
@@ -199,7 +199,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        // $product->clearMediaCollection('images');
+        $product->clearMediaCollection('images');
         $product->delete();
         return redirect()->route('admin.products.index');
     }

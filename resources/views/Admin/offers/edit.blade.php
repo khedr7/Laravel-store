@@ -87,7 +87,8 @@
                             <select multiple class="form-control{{ $errors->has('categories') ? ' is-invalid' : '' }}"
                                 name="categories[]" id="input-categories" value="{{ $offer->category_id }} ">
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">
+                                    <option value="{{ $category->id }}"
+                                        {{ $category->offers->contains($category->id) ? 'selected' : '' }}>
                                         {{ $category->name }}/{{ $category->getTranslation('name', 'ar') }}
                                     </option>
                                 @endforeach
@@ -101,7 +102,8 @@
                             <select multiple class="form-control{{ $errors->has('products') ? ' is-invalid' : '' }}"
                                 name="products[]" id="input-products" value="{{ $offer->product_id }}">
                                 @foreach ($products as $product)
-                                    <option value="{{ $product->id }}">
+                                    <option value="{{ $product->id }}"
+                                        {{ $product->offers->contains($product->id) ? 'selected' : '' }}>
                                         {{ $product->name }}/{{ $product->getTranslation('name', 'ar') }}
                                     </option>
                                 @endforeach
