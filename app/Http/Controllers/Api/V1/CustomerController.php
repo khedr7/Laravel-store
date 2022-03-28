@@ -7,6 +7,7 @@ use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
 class CustomerController extends Controller
 {
 
@@ -17,7 +18,7 @@ class CustomerController extends Controller
             'lname'        => 'required|string|min:3|max:25',
             'email'        => 'required|email',
             'password'     => 'required',
-            'phone' => 'numeric|min:9|max:10',
+            'phone' => 'numeric',
         ]);
 
         $validation['password'] = bcrypt($validation['password']);
@@ -30,7 +31,7 @@ class CustomerController extends Controller
                 'lname'   => $customer->lname,
                 'email'   => $customer->email,
                 'phone'   => $customer->phone,
-                'token'   => $token
+                'token'   => $token->plainTextToken
             ], 201);
         }
         return response()->json([
@@ -46,28 +47,25 @@ class CustomerController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
-            $customer = Auth::customer();
+            $customer = Auth::user();
             $customer->tokens()->delete();
             $token = $customer->createToken('auth');
-            if ($customer) {
-                return response()->json([
+            return response()->json([
                     'message' => 'Customer successfully loged in',
                     'fname'   => $customer->fname,
                     'lname'   => $customer->lname,
-                    'token'   => $token
-                ], 201);
-            }
-            return response()->json([
-                'message' => 'Email or password is wrong',
-            ], 400);
+                    'token'   => $token->plainTextToken
+            ], 201);
         }
+        return response()->json([
+            'message' => 'Email or password is wrong',
+        ], 400);
     }
 
     public function logOut(Request $request)
     {
-        // $request->user()->currentAccessToken()->delete();
-        $customer = Auth::customer();
-        $customer->currentAccessToken()->delete();
+        $customer = Auth::user();
+        $customer->tokens()->where('id', $customer->currentAccessToken()->id)->delete();
 
         return response()->json([
             'message' => 'You have successfully logged out and the token was successfully deleted',

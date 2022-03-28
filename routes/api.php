@@ -20,5 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('/register',[CustomerController::class,'register']);
-Route::post('/logIn',[CustomerController::class,'logIn']);
-Route::post('/logOut',[CustomerController::class,'logOut'])->middleware('auth:sanctum');
+Route::post('/login',[CustomerController::class,'logIn']);
+Route::post('/logout',[CustomerController::class,'logOut'])->middleware('auth:sanctum');
