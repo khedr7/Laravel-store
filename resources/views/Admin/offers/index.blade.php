@@ -3,17 +3,95 @@
 @section('content')
     <div class="row">
         <div class="col-md-12">
-            <div class="card ">
+            <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title"> Here you can manage Offers</h4>
+                    <h4 class="card-title"> Here you can manage offers</h4>
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12 text-right">
-                            <a href="{{ route('admin.offers.create') }}" class="btn btn-sm btn-primary">Add
+                        <div class="col-md-3">
+                            <form action="{{ route('admin.offers.index') }}">
+                                <div class="field">
+                                    <label class="label tim-icons icon-zoom-split">{{ __(' Search') }}</label>
+                                    <div class="control is-expanded">
+                                        <input class="input" type="text" placeholder="Search ..." name="search"
+                                            value="{{ request()->query('search', '') }}">
+                                    </div>
+                                </div>
+                        </div>
+                        {{-- <div class="col-md-2">
+                            <div class="subtitle is-4">
+                                Sort By :
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" name="sort" id="input-sort" value="name_en"
+                                            {{ 'name_en' == request()->query('sort') ? 'checked' : '' }}>
+                                        English name
+                                        <span class="form-check-sign"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" name="sort" id="input-sort" value="name_ar"
+                                            {{ 'name_ar' == request()->query('sort') ? 'checked' : '' }}>
+                                        Arabic name
+                                        <span class="form-check-sign"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" name="sort" id="input-sort" value="creation_date"
+                                            {{ 'creation_date' == request()->query('sort') ? 'checked' : '' }}>
+                                        Creation Date
+                                        <span class="form-check-sign"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="subtitle is-4">
+                                Order By :
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" name="order" id="input-order" value="ascending"
+                                            {{ 'ascending' == request()->query('order') ? 'checked' : '' }}>
+                                        Ascending
+                                        <span class="form-check-sign"></span>
+                                    </label>
+                                </div>
+                                <div class="form-check form-check-radio">
+                                    <label class="form-check-label">
+                                        <input type="radio" name="order" id="input-order" value="descending"
+                                            {{ 'descending' == request()->query('order') ? 'checked' : '' }}>
+                                        Descending
+                                        <span class="form-check-sign"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div> --}}
+                        <div class="field col-md-12">
+                            <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+                            <button type="reset" class="btn btn-sm btn-primary">Reset</button>
+                            <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary">Add
                                 Offer </a>
                         </div>
+                        </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card ">
+                <div class="card-header">
+                    <h4 class="card-title">Offers table</h4>
+                </div>
+                <div class="card-body">
                     <div class="table-responsive">
                         <table class="table tablesorter " id="">
                             <thead class=" text-primary">
