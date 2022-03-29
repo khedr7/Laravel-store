@@ -13,9 +13,25 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $users = User::all();
+
+        if ($request->filled('search')) {
+            $users->where('name', 'like', "%$request->search%");
+            $users->orWhere('email', 'like', "%$request->search%");
+            $users->orWhere('phone', 'like', "%$request->search%");
+            $users->orWhere('job_title', 'like', "%$request->search%");
+            $users->orWhere('salary', 'like', "%$request->search%");
+            $users->orWhere('resigned_at', 'like', "%$request->search%");
+        }
+        if ($request->filled('subscribed')) {
+            $users->where('subscribed', $request->subscribed);
+        }
+
+        $users = User::latest();
+        $users = $users->paginate(8);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**
