@@ -57,7 +57,7 @@ class CategoryController extends Controller
                     }
                 }
         }
-        $categories  = $categories->paginate(10);
+        $categories  = $categories->paginate(8);
         return view('admin.categories.index', ['categories' => $categories]);
     }
 
