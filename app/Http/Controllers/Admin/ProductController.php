@@ -166,7 +166,7 @@ class ProductController extends Controller
             'images.*'       => 'required|file|image',
         ]);
 
-        $product->price = $validation['price'];
+        $product->price       = $validation['price'];
         $product->category_id = $validation['category_id'];
 
         foreach ($validation['name'] as $lang => $name) {

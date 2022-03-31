@@ -12,8 +12,5 @@ class Newsletter extends Model implements HasMedia
 {
     use HasFactory, HasTranslations, InteractsWithMedia;
     public $translatable = ['title', 'content'];
-    protected $fillable =[
-        'title',
-        'content'
-    ];
+    protected $fillable  = ['title', 'content'];
 }

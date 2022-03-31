@@ -192,10 +192,10 @@ class OfferController extends Controller
         foreach ($validation['name'] as $lang => $name) {
             $offer->setTranslation('name', $lang, $name);
         }
-        $offer->discount =  $validation['discount'];
-        $offer->type =  $validation['type'];
+        $offer->discount   =  $validation['discount'];
+        $offer->type       =  $validation['type'];
         $offer->started_at = $validation['started_at'];
-        $offer->ended_at = $validation['ended_at'];
+        $offer->ended_at   = $validation['ended_at'];
         if ($request->filled('products')) {
             $offer->products()->detach();
             $offer->products()->attach($request->products);

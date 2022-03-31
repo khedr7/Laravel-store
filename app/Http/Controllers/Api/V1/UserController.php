@@ -27,7 +27,7 @@ class UserController extends Controller
         if ($user) {
             return response()->json([
                 'message' => 'user successfully registered',
-                'name'   => $user->name,
+                'name'    => $user->name,
                 'email'   => $user->email,
                 'phone'   => $user->phone,
                 'token'   => $token->plainTextToken
@@ -81,20 +81,11 @@ class UserController extends Controller
         $users = User::select('id', 'name', 'email', 'phone', 'job_title', 'subscribed', 'created_at', 'updated_at')->get();
         // $users->makeHidden('slary'); ..to hide a column
         return response()->json([
-            'data' => $users,
+            'users' => $users,
         ], 200);
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -116,11 +107,11 @@ class UserController extends Controller
     public function show(User $user)
     {
         return response()->json([
-            'id' => $user->id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'phone' => $user->phone,
-            'job_title' => $user->job_title,
+            'id'         => $user->id,
+            'name'       => $user->name,
+            'email'      => $user->email,
+            'phone'      => $user->phone,
+            'job_title'  => $user->job_title,
             'subscribed' => $user->subscribed,
             'created_at' => $user->created_at,
             'updated_at' => $user->updated_at,
@@ -128,16 +119,6 @@ class UserController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

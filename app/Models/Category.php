@@ -12,9 +12,7 @@ class Category extends Model implements HasMedia
 {
     use HasFactory, HasTranslations, InteractsWithMedia;
     public $translatable = ['name'];
-    protected $fillable =[
-        'name'
-        ];
+    protected $fillable  = ['name'];
 
     public function products()
     {
