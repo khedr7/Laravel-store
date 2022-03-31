@@ -13,7 +13,7 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validation = $request->validate([
-            'name'      => 'required|string|min:3|max:25',
+            'name'      => 'required|string|min:3|max:40',
             'email'     => 'required|email',
             'password'  => 'required',
             'phone'     => 'numeric',
@@ -21,6 +21,8 @@ class UserController extends Controller
 
         $validation['password'] = bcrypt($validation['password']);
         $user = User::create($validation);
+        $user->job_title = "customer";
+        $user->save();
         $token = $user->createToken('auth');
         if ($user) {
             return response()->json([
@@ -76,7 +78,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::select('id', 'name', 'email', 'phone', 'job_title', 'subscribed', 'created_at', 'updated_at')->get();
+        // $users->makeHidden('slary'); ..to hide a column
+        return response()->json([
+            'data' => $users,
+        ], 200);
+
     }
 
     /**
@@ -108,7 +115,17 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'job_title' => $user->job_title,
+            'subscribed' => $user->subscribed,
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+        ], 200);
+
     }
 
     /**
