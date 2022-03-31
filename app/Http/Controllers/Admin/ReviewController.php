@@ -13,9 +13,18 @@ class ReviewController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $reviews = Review::latest();
+        if ($request->filled('search')) {
+            $reviews->where('content', 'like', "%$request->search%");
+            $reviews->where('rate', 'like', "%$request->search%");
+        }
+        if ($request->filled('rate')) {
+            $reviews->where('rate', 'like', "$request->rate%");
+        }
+        $reviews = $reviews->paginate(10);
+        return view('admin.reviews.index',['reviews'=> $reviews]);
     }
 
     /**
@@ -47,7 +56,7 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        //
+        return view('admin.reviews.show',['review'=>$review]);
     }
 
     /**

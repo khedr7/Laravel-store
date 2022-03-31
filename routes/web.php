@@ -2,13 +2,13 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\Admin\{
     CategoryController,
+    NewsletterController,
     OfferController,
-    ProductController
+    ProductController,
+    ReviewController
 };
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,5 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
         Route::resource('offers', OfferController::class);
+        Route::resource('reviews', ReviewController::class);
+        Route::resource('newsletter', NewsletterController::class);
 });
 
