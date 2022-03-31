@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
@@ -30,9 +31,11 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $validation = $request->validate([
-            'rate'    => 'required|numeric',
-            'content' => 'required|string',
+            'rate'       => 'required|numeric',
+            'content'    => 'required|string',
+            'product_id' => 'required|numeric',
         ]);
+        $validation['user_id'] = Auth::id();
         $review = Review::create($validation);
         if ($review) {
             return response()->json([
@@ -66,18 +69,22 @@ class ReviewController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        $validation = $request->validate([
-            'rate'    => 'required|numeric',
-            'content' => 'required|string',
-        ]);
+        if ( $review->user_id == Auth::id() ) {
+            $validation = $request->validate([
+                'rate'    => 'required|numeric',
+                'content' => 'required|string',
+            ]);
 
-        $review->rate    =  $validation['rate'];
-        $review->content =  $validation['content'];
-        $review->save();
-
+            $review->rate    =  $validation['rate'];
+            $review->content =  $validation['content'];
+            $review->save();
+            return response()->json([
+                'message' => 'The review edited successfully',
+            ], 200);
+        }
         return response()->json([
-            'message' => 'The review edited successfully',
-        ], 200);
+            'message' => 'This review is not yours',
+        ], 401);
     }
 
     /**
@@ -88,9 +95,14 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        $review->delete();
+        if ($review->user_id == Auth::id()) {
+            $review->delete();
+            return response()->json([
+                'message' => 'The review deleted successfully',
+            ], 200);
+        }
         return response()->json([
-            'message' => 'The review deleted successfully',
-        ], 200);
+            'message' => 'This review is not yours',
+        ], 401);
     }
 }
