@@ -37,6 +37,14 @@ class ProductController extends Controller
         }
 
         foreach ($products as $product) {
+            $reviews = $product->reviews;
+            $rate = 0;
+            foreach ($reviews as $review) {
+            $rate = $rate + $review->rate;
+            }
+            $rate = $rate/count($reviews);
+            $product->rate =$rate;
+
             $product->current_price = $product->price;
             $offers = $product->offers()->orderBy('started_at')->get();
             foreach ($offers as $offer) {
@@ -111,6 +119,14 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+
+        $reviews = $product->reviews;
+        $rate = 0;
+        foreach ($reviews as $review) {
+            $rate = $rate + $review->rate;
+        }
+        $rate = $rate/count($reviews);
+        $product->rate =$rate;
         $product->current_price = $product->price;
         $offers = $product->offers()->orderBy('started_at')->get();
             foreach ($offers as $offer) {

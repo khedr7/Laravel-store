@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->double('price');
             $table->double('current_price');
             $table->text('status');
+            $table->double('rate')->nullable();
             $table->foreignId('category_id')->constrained('categories')->onDelete('cascade');
             $table->text('description');
             $table->timestamps();

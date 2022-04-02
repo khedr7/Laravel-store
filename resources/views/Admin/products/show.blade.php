@@ -1,6 +1,5 @@
 @extends('layouts.app', ['page' => __('products'), 'pageSlug' => 'products'])
 
-
 @section('content')
     <div class="row">
         <div class="col-md-10">
@@ -25,6 +24,16 @@
                             <a
                                 href="{{ route('admin.categories.show', $product->category) }}">{{ $product->category->name }}</a>
                         </p>
+                    </div>
+                    <div class="typography-line">
+                        <span>Rate</span>
+                        @if ($product->rate)
+                            <p class="text-primary">
+                                {{ $product->rate }}</p>
+                        @else
+                            <p class="text-primary">
+                                There is no rate yet</p>
+                        @endif
                     </div>
                     <div class="typography-line">
                         <span>Price</span>
@@ -67,6 +76,12 @@
                             <p class="text-primary">
                                 There is no offers </p>
                         @endif
+                    </div>
+                    <div class="typography-line">
+                        <span>Reviews</span>
+                        <p class="text-primary">
+                            <a href="{{ route('admin.productReviews', $product->id) }}">Reviews</a>
+                        </p>
                     </div>
                     <div class="typography-line">
                         <span>Created at</span>
