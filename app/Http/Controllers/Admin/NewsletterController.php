@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\NewsletterMail;
 use App\Models\Newsletter;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class NewsletterController extends Controller
 {
@@ -13,9 +16,17 @@ class NewsletterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $newsletters = Newsletter::latest();
+
+        if ($request->filled('search')) {
+            $newsletters->where('title', 'like', "%$request->search%");
+            $newsletters->orWhere('content', 'like', "%$request->search%");
+        }
+
+        $newsletters  = $newsletters->paginate(10);
+        return view('admin.newsletters.index', ['newsletters' => $newsletters]);
     }
 
     /**
@@ -25,7 +36,7 @@ class NewsletterController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.newsletters.create');
     }
 
     /**
@@ -36,7 +47,28 @@ class NewsletterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = $request->validate([
+            'title'     => 'required',
+            'title.*'   => 'required|min:3',
+            'content'     => 'required',
+            'content.*'   => 'required|string',
+            'images'   => 'required|array',
+            'images.*' => 'required|file|image',
+        ]);
+        $newsletter = Newsletter::create($validation);
+        if ($request->hasFile('images')) {
+            $fileAdders = $newsletter->addMultipleMediaFromRequest(['images'])
+            ->each(function ($fileAdder) {
+                $fileAdder->preservingOriginal()->toMediaCollection('images');
+            });
+        }
+        $subscribers = User::where('subscribed',1);
+        if ($subscribers) {
+            foreach ($subscribers as $subscriber) {
+                Mail::to($subscriber->email)->send(new NewsletterMail($subscriber->name, $newsletter));
+            }
+        }
+        return redirect()->route('admin.newsletters.index');
     }
 
     /**
@@ -47,7 +79,8 @@ class NewsletterController extends Controller
      */
     public function show(Newsletter $newsletter)
     {
-        //
+        $mediaItems = $newsletter->getMedia('images');
+        return view('admin.newsletters.show', ['newsletter' => $newsletter, 'mediaItems' => $mediaItems]);
     }
 
     /**
@@ -81,6 +114,20 @@ class NewsletterController extends Controller
      */
     public function destroy(Newsletter $newsletter)
     {
-        //
+        $newsletter->clearMediaCollection('images');
+        $newsletter->delete();
+        return redirect()->route('admin.newsletters.index');
+    }
+
+    public function mail(newsletter $newsletter)
+    {
+        $subscribers = User::where('subscribed',1);
+        if ($subscribers) {
+            foreach ($subscribers as $subscriber) {
+                Mail::to($subscriber->email)->send(new NewsletterMail($subscriber->name, $newsletter));
+            }
+        }
+        return redirect()->route('admin.newsletters.index');
     }
 }
+
