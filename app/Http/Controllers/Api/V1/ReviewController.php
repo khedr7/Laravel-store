@@ -30,14 +30,21 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
+        $reviews = Review::all();
+        if ($reviews->where('user_id', 'like', Auth::id())) {
+            return response()->json([
+                'message' => 'You already have a review',
+            ], 400);
+        }
         $validation = $request->validate([
             'rate'       => 'required|numeric',
             'content'    => 'required|string',
-            'product_id' => 'required|numeric',
+            'product_id' => 'required|numeric|exists:products,id',
         ]);
-        $validation['user_id'] = Auth::id();
         $review = Review::create($validation);
         if ($review) {
+            $review->user_id = Auth::id();
+            $review->save();
             return response()->json([
                 'message' => 'The review created successfully',
             ], 201);

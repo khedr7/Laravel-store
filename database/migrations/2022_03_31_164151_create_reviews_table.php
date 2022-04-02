@@ -18,7 +18,7 @@ class CreateReviewsTable extends Migration
             $table->string('content');
             $table->float('rate');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

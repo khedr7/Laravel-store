@@ -49,6 +49,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::resource('products', ProductController::class);
         Route::resource('offers', OfferController::class);
         Route::resource('reviews', ReviewController::class);
+        Route::get('/products/{product}/reviews',[ReviewController::class,'productReviews'])->name('productReviews');
         Route::resource('newsletter', NewsletterController::class);
 });
 

@@ -54,6 +54,18 @@
                     <p>{{ __('Offers') }}</p>
                 </a>
             </li>
+            <li @if ($pageSlug == 'reviews') class="active " @endif>
+                <a href="{{ route('admin.reviews.index') }}">
+                    <i class="tim-icons icon-notes"></i>
+                    <p>{{ __('Reviews') }}</p>
+                </a>
+            </li>
+            <li @if ($pageSlug == 'newsletter') class="active " @endif>
+                <a href="{{ route('admin.newsletter.index') }}">
+                    <i class="tim-icons icon-email-85"></i>
+                    <p>{{ __('Newsletter') }}</p>
+                </a>
+            </li>
             <li @if ($pageSlug == 'icons') class="active " @endif>
                 <a href="{{ route('pages.icons') }}">
                     <i class="tim-icons icon-atom"></i>
