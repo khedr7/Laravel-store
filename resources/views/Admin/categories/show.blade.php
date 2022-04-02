@@ -55,9 +55,6 @@
                         <img class="card-img" src="{{ $mediaItem->getUrl() }}" alt="Category image">
                     </div>
                 </div>
-                {{-- <div class="card bg-dark text-white">
-                    <img class="card-img" src="{{ $mediaItem->getUrl() }}" alt="Card image">
-                </div> --}}
             </div>
         @endforeach
     </div>

@@ -76,7 +76,7 @@
                         <div class="field col-md-12">
                             <button type="submit" class="btn btn-sm btn-primary">Submit</button>
                             <button type="reset" class="btn btn-sm btn-primary">Reset</button>
-                            <a href="{{ route('admin.categories.create') }}" class="btn btn-sm btn-primary">Add
+                            <a href="{{ route('admin.offers.create') }}" class="btn btn-sm btn-primary">Add
                                 Offer </a>
                         </div>
                         </form>
