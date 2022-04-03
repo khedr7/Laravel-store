@@ -70,6 +70,22 @@ class UserController extends Controller
         ], 200);
     }
 
+    public function subscribe()
+    {
+        $user = Auth::user();
+        $user->subscribed = 1;
+        $user->save();
+        if ($user->subscribed) {
+            return response()->json([
+                'message' => 'You have successfully subscribed',
+            ], 200);
+        }
+        else {
+            return response()->json([
+                'message' => 'Error',
+            ], 400);
+        }
+    }
 
     /**
      * Display a listing of the resource.

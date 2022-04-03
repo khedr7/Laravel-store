@@ -25,5 +25,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register',[UserController::class,'register']);
 Route::post('/login',[UserController::class,'logIn']);
 Route::post('/logout',[UserController::class,'logOut'])->middleware('auth:sanctum');
+Route::post('/subscribe',[UserController::class,'subscribe'])->middleware('auth:sanctum');
 Route::apiResource('users', UserController::class)->only('index','show');
 Route::apiResource('reviews', ReviewController::class)->middleware('auth:sanctum');
