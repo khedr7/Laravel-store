@@ -22,6 +22,7 @@ class NewsletterMail extends Mailable
         //
     }
 
+
     /**
      * Build the message.
      *

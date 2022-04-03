@@ -60,10 +60,10 @@
                     <p>{{ __('Reviews') }}</p>
                 </a>
             </li>
-            <li @if ($pageSlug == 'newsletter') class="active " @endif>
-                <a href="{{ route('admin.newsletter.index') }}">
-                    <i class="tim-icons icon-email-85"></i>
-                    <p>{{ __('Newsletter') }}</p>
+            <li @if ($pageSlug == 'newsletters') class="active " @endif>
+                <a href="{{ route('admin.newsletters.index') }}">
+                    <i class="tim-icons icon-paper"></i>
+                    <p>{{ __('Newsletters') }}</p>
                 </a>
             </li>
             <li @if ($pageSlug == 'icons') class="active " @endif>

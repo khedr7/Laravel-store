@@ -62,11 +62,10 @@ class NewsletterController extends Controller
                 $fileAdder->preservingOriginal()->toMediaCollection('images');
             });
         }
-        $subscribers = User::where('subscribed',1);
-        if ($subscribers) {
-            foreach ($subscribers as $subscriber) {
-                Mail::to($subscriber->email)->send(new NewsletterMail($subscriber->name, $newsletter));
-            }
+        $subscribers = User::all();
+        $subscribers = $subscribers->where('subscribed',1);
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->send(new NewsletterMail($subscriber->name, $newsletter));
         }
         return redirect()->route('admin.newsletters.index');
     }
@@ -119,13 +118,13 @@ class NewsletterController extends Controller
         return redirect()->route('admin.newsletters.index');
     }
 
-    public function mail(newsletter $newsletter)
+    public function mail($newsletter_id)
     {
-        $subscribers = User::where('subscribed',1);
-        if ($subscribers) {
-            foreach ($subscribers as $subscriber) {
-                Mail::to($subscriber->email)->send(new NewsletterMail($subscriber->name, $newsletter));
-            }
+        $newsletter = Newsletter::findOrFail($newsletter_id);
+        $subscribers = User::all();
+        $subscribers = $subscribers->where('subscribed',1);
+        foreach ($subscribers as $subscriber) {
+            Mail::to($subscriber->email)->send(new NewsletterMail($subscriber->name, $newsletter));
         }
         return redirect()->route('admin.newsletters.index');
     }
